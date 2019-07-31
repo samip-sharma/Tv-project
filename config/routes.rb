@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :user_movies, only:[:create]
   get "/users/:id/favourite", to: "user_movies#userfav"
+  get "/users/:userid/liked/:imdb", to: "user_movies#likedornot"
   # resources :movies
   # resources :users
   # delete "/user/:picid/comment/:id/:where", to: "comments#destroy", as: "delete_comment"

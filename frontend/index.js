@@ -10,9 +10,9 @@ class Adaptor{
     .then(function(data){
       let container=document.querySelector(".container")
       container.innerHTML=""
-      data.results.forEach(function(movie,i){
+      data.results.forEach(function(movie){
 
-        new MovieList(movie,i)
+        new MovieList(movie)
       })
     })
   }
@@ -28,6 +28,14 @@ class Adaptor{
     .then(resp => resp.json())
 
   }
+
+
+
+  static fetchIfLiked(id){
+  return  fetch(`http://localhost:3000/users/1/liked/${id}`)
+    .then(resp => resp.json())
+    // .then(console.log)
+  }
 }
 
 Adaptor.fetchMovies()
@@ -37,16 +45,33 @@ Adaptor.fetchMovies()
 
 
 class EachFavouriteMovie{
-  constructor(data){
-    this.title=data.name
-    this.imdb=data.imdb
-    this.id=data.id
+  constructor(movie){
+    this.title=movie.title
+    this.vote_average=movie.vote_average
+    this.overview=movie.overview
+    this.poster_path=movie.img_url
+    this.id=movie.imdb
+    // new MovieDetail(this)
     this.slappingFavMovies()
   }
 
- static slappingFavMovies(){
+    slappingFavMovies(){
+      let favList=document.querySelector(".all-fav-list")
+      let div=document.createElement("div")
 
-   debugger
+      div.innerHTML= `
+      <a href="#">${this.title}</a>
+      `
+      favList.append(div)
+      let link=  div.querySelector("a")
+
+
+      // event listner
+      link.addEventListener("click",event=>{
+        new MovieDetail(this)
+
+      })
+
  }
 }
 
@@ -64,14 +89,14 @@ class EachFavouriteMovie{
 
 // fetch all movie end
 class MovieList{
-  constructor(movie,i){
+  constructor(movie){
     this.img_url=movie.poster_path
     this.id=movie.id
-    this.slappingEachMovie(movie,i)
+    this.slappingEachMovie(movie)
   }
 
 
-  slappingEachMovie(movie,i){
+  slappingEachMovie(movie){
     let container=document.querySelector(".container")
     let div=document.createElement("div")
     div.class="movie-list"
@@ -97,6 +122,7 @@ class MovieList{
 
 class MovieDetail{
   constructor(movie){
+
     this.title=movie.title
     this.vote_average=movie.vote_average
     this.overview=movie.overview
@@ -134,8 +160,12 @@ class MovieDetail{
           <h4>${this.title}</h4>
           <p>${this.overview}</p>
 
-        <button class="like">like</button>
-        <button class="delete">home</button>
+
+        <button class="button button-like">
+          <i class="fa fa-heart"></i>
+          <span>Like</span>
+        </button>
+
       </div>
     `
 
@@ -152,13 +182,22 @@ class MovieDetail{
       container.append(videoDiv)
     })
 
-    let likeButton=document.querySelector(".like")
+      // like button logic
 
+    let likeButton=document.querySelector(".button-like")
+    Adaptor.fetchIfLiked(this.id)
+    .then(ans=>{
 
-    likeButton.addEventListener("click",(event)=>{
-      // console.log(this)
-      this.makePostReqTolike()
+      if (ans){likeButton.classList.add("liked")}
+      likeButton.addEventListener("click",(event)=>{
+        this.makePostReqTolike()
+        likeButton.classList.toggle("liked");
+      })
     })
+
+
+
+
   }
 
   goToHome(){
