@@ -3,37 +3,37 @@
 
 
 
-class Adaptor{
-  static fetchMovies(){
+class Adaptor {
+  static fetchMovies() {
     fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=a3cd5d00d31f044f243447255913e870&language=en-US&page=1")
-    .then(resp => resp.json())
-    .then(function(data){
-      let container=document.querySelector(".container")
-      container.innerHTML=""
-      data.results.forEach(function(movie){
+      .then(resp => resp.json())
+      .then(function(data) {
+        let container = document.querySelector(".container")
+        container.innerHTML = ""
+        data.results.forEach(function(movie) {
 
-        new MovieList(movie)
+          new MovieList(movie)
+        })
       })
-    })
   }
 
-  static fetchTrailer(url){
-    return  fetch(url)
-    .then(resp=>resp.json())
+  static fetchTrailer(url) {
+    return fetch(url)
+      .then(resp => resp.json())
   }
 
 
-  static getFavouriteMovies(){
+  static getFavouriteMovies() {
     return fetch("http://localhost:3000/users/1/favourite")
-    .then(resp => resp.json())
+      .then(resp => resp.json())
 
   }
 
 
 
-  static fetchIfLiked(id){
-  return  fetch(`http://localhost:3000/users/1/liked/${id}`)
-    .then(resp => resp.json())
+  static fetchIfLiked(id) {
+    return fetch(`http://localhost:3000/users/1/liked/${id}`)
+      .then(resp => resp.json())
     // .then(console.log)
   }
 }
@@ -44,35 +44,35 @@ Adaptor.fetchMovies()
 
 
 
-class EachFavouriteMovie{
-  constructor(movie){
-    this.title=movie.title
-    this.vote_average=movie.vote_average
-    this.overview=movie.overview
-    this.poster_path=movie.img_url
-    this.id=movie.imdb
+class EachFavouriteMovie {
+  constructor(movie) {
+    this.title = movie.title
+    this.vote_average = movie.vote_average
+    this.overview = movie.overview
+    this.poster_path = movie.img_url
+    this.id = movie.imdb
     // new MovieDetail(this)
     this.slappingFavMovies()
   }
 
-    slappingFavMovies(){
-      let favList=document.querySelector(".all-fav-list")
-      let div=document.createElement("div")
+  slappingFavMovies() {
+    let favList = document.querySelector(".all-fav-list")
+    let div = document.createElement("div")
 
-      div.innerHTML= `
+    div.innerHTML = `
       <a href="#">${this.title}</a>
       `
-      favList.append(div)
-      let link=  div.querySelector("a")
+    favList.append(div)
+    let link = div.querySelector("a")
 
 
-      // event listner
-      link.addEventListener("click",event=>{
-        new MovieDetail(this)
+    // event listner
+    link.addEventListener("click", event => {
+      new MovieDetail(this)
 
-      })
+    })
 
- }
+  }
 }
 
 
@@ -83,31 +83,28 @@ class EachFavouriteMovie{
 
 
 
-
-
-
-
 // fetch all movie end
-class MovieList{
-  constructor(movie){
-    this.img_url=movie.poster_path
-    this.id=movie.id
+class MovieList {
+  constructor(movie) {
+    this.img_url = movie.poster_path
+    this.id = movie.id
     this.slappingEachMovie(movie)
   }
 
 
-  slappingEachMovie(movie){
-    let container=document.querySelector(".container")
-    let div=document.createElement("div")
-    div.class="movie-list"
-      div.innerHTML=`
+  slappingEachMovie(movie, i) {
+    if (!this.img_url) return undefined;
+    let container = document.querySelector(".container")
+    let div = document.createElement("div")
+    div.class = "movie-list"
+    div.innerHTML = `
       <div class="each-img">
           <img src=https://image.tmdb.org/t/p/w500/${this.img_url}>
         </div>
     `
     container.append(div)
-    let img=div.querySelector("img")
-    img.addEventListener("click",(event)=> {
+    let img = div.querySelector("img")
+    img.addEventListener("click", (event) => {
       new MovieDetail(movie)
     })
 
@@ -120,25 +117,26 @@ class MovieList{
 
 
 
-class MovieDetail{
-  constructor(movie){
+class MovieDetail {
+  constructor(movie) {
 
-    this.title=movie.title
-    this.vote_average=movie.vote_average
-    this.overview=movie.overview
-    this.img_url=movie.poster_path
-    this.id=movie.id
+    this.title = movie.title
+    this.vote_average = movie.vote_average
+    this.overview = movie.overview
+    this.img_url = movie.poster_path
+    this.id = movie.id
     this.slappingMovieDetail()
   }
 
-  slappingMovieDetail(){
-    let container=document.querySelector(".container")
+  slappingMovieDetail() {
+    let container = document.querySelector(".container")
     container.innerHTML = '';
-        let imgUrl=`https://image.tmdb.org/t/p/w500/${this.img_url}`
-        container.innerHTML=`
-      <div class="image-n-rating">
-          <img src=${imgUrl} alt=${this.title}/>
+    let imgUrl = `https://image.tmdb.org/t/p/w500/${this.img_url}`
+    container.innerHTML = `
 
+      <div class="detail-img">
+          <img src=${imgUrl} alt=${this.title}/>
+          </div>
           <div class="grid">
           <section>
             <h2>Average rating</h2>
@@ -150,8 +148,16 @@ class MovieDetail{
               </g>
             </svg>
           </section>
+
+
+          <div>
+          <button class="button button-like">
+            <i class="fa fa-heart"></i>
+            <span>Like</span>
+          </button>
           </div>
-      </div>
+          </div>
+
 
       <div class="trailer">
       </div>
@@ -161,46 +167,50 @@ class MovieDetail{
           <p>${this.overview}</p>
 
 
-        <button class="button button-like">
-          <i class="fa fa-heart"></i>
-          <span>Like</span>
-        </button>
+
 
       </div>
     `
 
-    let trailerUrl=`https://api.themoviedb.org/3/movie/${this.id}/videos?api_key=a3cd5d00d31f044f243447255913e870&language=en-US`
+    let trailerUrl = `https://api.themoviedb.org/3/movie/${this.id}/videos?api_key=a3cd5d00d31f044f243447255913e870&language=en-US`
     Adaptor.fetchTrailer(trailerUrl)
-    .then(data=> {
-      this.youtube= data.results[0].key
-      let videoDiv=document.querySelector(".trailer")
-      videoDiv.innerHTML=`
-      <iframe width="420" height="315"
+      .then(data => {
+
+        if (data.results[0]) {
+          this.youtube = data.results[0].key
+          let detailImagediv = document.querySelector(".detail-img")
+
+          let videoDiv = document.querySelector(".trailer")
+          videoDiv.innerHTML = `
+      <iframe width="820" height="610"
       src=https://www.youtube.com/embed/${this.youtube}>
       </iframe>
       `
-      container.append(videoDiv)
-    })
-
-      // like button logic
-
-    let likeButton=document.querySelector(".button-like")
-    Adaptor.fetchIfLiked(this.id)
-    .then(ans=>{
-
-      if (ans){likeButton.classList.add("liked")}
-      likeButton.addEventListener("click",(event)=>{
-        this.makePostReqTolike()
-        likeButton.classList.toggle("liked");
+          detailImagediv.append(videoDiv)
+        }
       })
-    })
+
+    // like button logic
+
+    let likeButton = document.querySelector(".button-like")
+    Adaptor.fetchIfLiked(this.id)
+      .then(ans => {
+
+        if (ans) {
+          likeButton.classList.add("liked")
+        }
+        likeButton.addEventListener("click", (event) => {
+          this.makePostReqTolike()
+          likeButton.classList.toggle("liked");
+        })
+      })
 
 
 
 
   }
 
-  goToHome(){
+  goToHome() {
 
   }
 
@@ -209,14 +219,14 @@ class MovieDetail{
 
 
 
-  makePostReqTolike(){
-    fetch("http://localhost:3000/user_movies",{
-      method:"POST",
-      headers:{
-        "content-type":"application/json",
-        "accept":"application/json"
+  makePostReqTolike() {
+    fetch("http://localhost:3000/user_movies", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json"
       },
-      body:JSON.stringify(this)
+      body: JSON.stringify(this)
     })
   }
 
