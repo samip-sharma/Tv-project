@@ -29,6 +29,10 @@ class Adaptor {
 
   }
 
+  static fetchSimilarMovies(id){
+    return fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=a3cd5d00d31f044f243447255913e870&language=en-US&page=1`)
+    .then(resp => resp.json())
+  }
 
 
   static fetchIfLiked(id) {
@@ -58,9 +62,11 @@ class EachFavouriteMovie {
   slappingFavMovies() {
     let favList = document.querySelector(".all-fav-list")
     let div = document.createElement("div")
+    div.className="inlinetry"
 
     div.innerHTML = `
-      <a href="#">${this.title}</a>
+      <a href="#" class="favourite-img">
+      <img  src=https://image.tmdb.org/t/p/w500/${this.poster_path}></a>
       `
     favList.append(div)
     let link = div.querySelector("a")
@@ -165,12 +171,13 @@ class MovieDetail {
       <div class="show">
           <h4>${this.title}</h4>
           <p>${this.overview}</p>
-
-
-
-
       </div>
+
+      <div class="similar-movies"></div>
     `
+
+
+    // trailer part
 
     let trailerUrl = `https://api.themoviedb.org/3/movie/${this.id}/videos?api_key=a3cd5d00d31f044f243447255913e870&language=en-US`
     Adaptor.fetchTrailer(trailerUrl)
@@ -207,14 +214,41 @@ class MovieDetail {
 
 
 
+        // similar movies fetch and slap
 
+      Adaptor.fetchSimilarMovies(this.id)
+      .then(this.loopingSimilarMovies.bind(this))
   }
 
-  goToHome() {
 
+
+  loopingSimilarMovies(data){
+    data.results.forEach(movie=>{
+      this.slappingSimilarMovie(movie)
+    })
   }
 
 
+  slappingSimilarMovie(movie){
+    let similarMovieDiv=document.querySelector(".similar-movies")
+      let divEachSimilar=document.createElement("div")
+          divEachSimilar.className="each-similar-movie"
+          divEachSimilar.innerHTML= `
+        <img class="similar-image" src=https://image.tmdb.org/t/p/w500/${movie.poster_path}>
+    `
+    similarMovieDiv.append(divEachSimilar)
+
+    let similarImg = divEachSimilar.querySelector(".similar-image")
+    //
+      similarImg.addEventListener("click", (event) => {
+      console.log(event)
+      // debugger
+      new MovieDetail(movie)
+    })
+
+
+
+  }
 
 
 

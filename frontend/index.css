@@ -3,13 +3,106 @@
   padding:0;
 }
 
-
-.fa-heart{
-  color: black;
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 
+.favourite-movie .fa-heart{
+  color: white;
+  padding:10px;
+
+}
+
+.fa-heart:hover{
+  background-color: rgb(29,	47,	64	);
+}
 /* my css */
+
+
+.button-on-top{
+  border: none;
+  background-color: rgba(29	,47,	64	, 1);
+  outline: none;
+  color: white;
+  cursor: pointer;
+  padding:10px;
+
+}
+
+.button-on-top:hover{
+  background-color: black;
+
+}
+
+.favourite-movie .fa-heart:hover{
+  background-color: black;
+
+}
+
+.grid{
+  display: flex;
+  margin-left: 20px;
+  flex-direction: column;
+}
+
+.all-fav-list{
+/* display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+felx-wrap: wrap;
+overflow-x: auto; */
+overflow: scroll;
+white-space: nowrap;
+max-width: 20%;
+}
+
+.inlinetry {
+  display: inline-block;
+}
+
+
+
+.favourite-img img{
+  height:500px;
+}
+
+
+.container .show{
+  width: 800px;
+  margin-top: 30px;
+}
+
+.similar-movies{
+  margin-top: 20px;
+  overflow: auto;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* display: flex; */
+  /* overflow-x: scroll; */
+}
+
+.each-similar-movie img{
+  /* width:"410"; */
+  height:200px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+}
+
+.each-similar-movie img:hover{
+  opacity: 1;
+  -webkit-animation: flash 1.5s;
+  animation: flash 1.5s;
+  cursor: pointer;
+}
 
 .text-box{
   width:400px;
@@ -44,6 +137,7 @@
 	opacity: 1;
 	-webkit-animation: flash 1.5s;
 	animation: flash 1.5s;
+  cursor: pointer;
 }
 @-webkit-keyframes flash {
 	0% {
@@ -112,7 +206,8 @@ body{
   position: fixed;
   width: 100%;
   height:60px;
-  background-color: rgba(245, 245, 245, 1)
+  background-color: rgba(29	,47,	64	, 1);
+  color: white;
 }
 
 .each-img img{
@@ -272,23 +367,10 @@ html {
 
 
 
-
-.grid{
-  display: flex;
-  margin-left: 20px;
-  flex-direction: column;
-}
-
-.container .show{
-  width: 1000px;
-  margin-top: 30px;
-}
-
-
-
 /* like button */
 
 .button-like {
+  outline: none;
   border: 2px solid #8a8a8a;
   background-color: transparent;
   text-decoration: none;
