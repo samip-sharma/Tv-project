@@ -24,7 +24,7 @@ class Adaptor {
 
 
   static getFavouriteMovies() {
-    return fetch("http://localhost:3000/users/1/favourite")
+    return fetch("https://testingthisonething.herokuapp.com/users/1/favourite")
       .then(resp => resp.json())
 
   }
@@ -36,7 +36,7 @@ class Adaptor {
 
 
   static fetchIfLiked(id) {
-    return fetch(`http://localhost:3000/users/1/liked/${id}`)
+    return fetch(`https://testingthisonething.herokuapp.com/users/1/liked/${id}`)
       .then(resp => resp.json())
     // .then(console.log)
   }
@@ -254,7 +254,7 @@ class MovieDetail {
 
 
   makePostReqTolike() {
-    fetch("http://localhost:3000/user_movies", {
+    fetch("https://testingthisonething.herokuapp.com/user_movies", {
       method: "POST",
       headers: {
         "content-type": "application/json",
