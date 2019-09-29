@@ -1,24 +1,8 @@
-# README
+Tv-project
+Stay up to date on all the latest movies with trailers, in one place
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
++ Developed Rails API backend and Vanilla JavaScript frontend app
++ Used TMDb API in frontend to fetch data
++ Created search and like features
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Application is live hosted at: https://samip-sharma.github.io/Tv-project/
